@@ -38,6 +38,7 @@
 				<applicationName>${application.name}</applicationName>
 				<password>${password}</password>
 				<muleVersion>${mule.version}</muleVersion>
+				<objectStoreV2>true</objectStoreV2>
 				</cloudHubDeployment>
 				</configuration>
 			</plugin>
