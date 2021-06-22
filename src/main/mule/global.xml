@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:national-rail-api="http://www.mulesoft.org/schema/mule/national-rail-api" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:servicenow="http://www.mulesoft.org/schema/mule/servicenow"
-	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:national-rail-api="http://www.mulesoft.org/schema/mule/national-rail-api"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:servicenow="http://www.mulesoft.org/schema/mule/servicenow" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/servicenow http://www.mulesoft.org/schema/mule/servicenow/current/mule-servicenow.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/national-rail-api http://www.mulesoft.org/schema/mule/national-rail-api/current/mule-national-rail-api.xsd">
+http://www.mulesoft.org/schema/mule/national-rail-api http://www.mulesoft.org/schema/mule/national-rail-api/current/mule-national-rail-api.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
 	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="9aeb13ed-ab3c-41ca-b5dc-0e9cc4aa2e2b" environment="${mule.env}" />
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="bf9a0ff3-993f-4345-b335-dd5692f20cf9" basePath="${auth.basepath}">
 		<http:request-connection host="${auth.host}" port="${auth.port}" protocol="HTTPS"/>
@@ -18,6 +19,7 @@ http://www.mulesoft.org/schema/mule/national-rail-api http://www.mulesoft.org/sc
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="a3d5d8f0-34a8-4123-9d22-019a3e67656e" file="config.yaml" key="mytoken">
 		<secure-properties:encrypt algorithm="Blowfish" />
 	</secure-properties:config>
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="da842797-d097-4ce0-97e5-42a34376e30f" flowRef="auth-train-api-main" />
 	<error-handler name="globalError_Handler" doc:id="63c66679-7baa-4b6f-9a8f-6ffa9e09b908" >
 		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="da4716f5-7a2e-4dd8-bf36-737c7f84df8c" type="HTTP:CONNECTIVITY,HTTP:FORBIDDEN,HTTP:SERVICE_UNAVAILABLE,HTTP:UNAUTHORIZED,HTTP:GATEWAY_TIMEOUT">
 			<ee:transform doc:name="Transform Message" doc:id="be86d8e1-bab8-44a4-bd2d-91238bdf26b8" >
